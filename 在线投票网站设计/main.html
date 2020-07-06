@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <script src="./plugin/jquery-3.5.1.js"></script>
+    <script src="./plugin/jquery-ui.js"></script>
+    <link rel="stylesheet" href="./plugin/jquery-ui.css">
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+<div id="logo" >
+   <p>欢迎使用在线投票网</p>
+</div>
+<div id="main">
+    <!--需求:标签页切换-->
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">投票界面</a></li>
+            <li><a href="#tabs-2">结果展示界面</a></li>
+        </ul>
+        <div id="tabs-1">
+           <div>
+               <ul id="tabs-1-content">
+                    <!--需求:单个投票项目模板-->
+                    <li class="tabs-1-content-items" id="tmp">
+                        <div id="tabs-1-content-left">
+                           <img src="img/man1.jpg" width="200px" height="195px" />
+                        </div>
+                        <div id="tabs-1-content-right">
+                            <p id="name">名字模板</p>
+                            <p id="school">学校模板</p>
+                            <button >投TA一票</button>
+                            <p id="number">票数模板</p>
+                        </div>
+                    </li>      
+                </ul>
+           </div>
+        </div>
+        <div id="tabs-2">
+            <div>
+                <ul id="tabs-2-content">
+                    <!--需求:实现单个排名模板-->
+                    <li class="tabs-2-content-items" id="tmp-2">
+                        <div id="ranking">00</div>
+                        <div id="tabs-2-content-left">
+                            <img src="img/man1.jpg" width="100px" height="97px" />
+                         </div>
+                         <div id="tabs-2-content-right">
+                             <div id="tabs-2-content-right-up">
+                                 <div id="right-up-right"><p id="name">杨雪雁</p></div>
+                                 <div id="right-up-left"><p id="school">广州航海学院</p></div>                           
+                             </div>
+                             <div id="tabs-2-content-right-down">
+                                 <div id="right-down-right"><progress class="myprogress" value="500" max="2000"></progress></div>
+                                 <div id="right-down-left"><p id="number">共11688票</p></div>
+                             </div>
+                         </div> 
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="footer">
+    <br>
+        <p>
+            COPY RIGHT &copy;&nbsp;&nbsp;&nbsp;软件181-04-刘培永 在线投票网站
+        </p>
+    <br>
+</div>
+</body>
+</html>
+<script>
+    window.onload = function(){
+        var ul = document.getElementById("tabs-1-content");
+        var players=[
+        {id:"1",name:"杨雪雁",school:"广州航海学院",number:"11688",img:"woman1.jpg"},
+        {id:"2",name:"刘涛",school:"广州航海学院",number:"1288",img:"man1.jpg"},
+        {id:"3",name:"何秀芳",school:"广州航海学院",number:"1287",img:"woman2.jpg"},
+        {id:"4",name:"李松峰",school:"广州航海学院",number:"1258",img:"man2.jpg"},
+        {id:"5",name:"张金霞",school:"广州航海学院",number:"638",img:"woman3.jpg"},
+        {id:"6",name:"韩杰",school:"广州航海学院",number:"1226",img:"man3.jpg"},
+        {id:"7",name:"奥黛丽",school:"广州航海学院",number:"779",img:"woman4.jpg"},
+        {id:"8",name:"梁胜名",school:"广州航海学院",number:"1082",img:"man4.jpg"},
+        {id:"9",name:"林黛玉",school:"广州航海学院",number:"1453",img:"woman5.jpg"},
+        {id:"10",name:"井九",school:"广州航海学院",number:"334",img:"man5.jpg"}
+    ];
+    //需求:实现投票页面
+    var tmp=document.getElementById("tmp");
+    index=1;
+    function addProduct()
+    {
+        for(var i=0;i<players.length;i++)
+        {
+            var li=tmp.cloneNode(true);
+            var id = parseInt(i);
+            li.id='tab1-'+players[i].id;
+            count=i+1;
+            li.children[0].children[0].src = 'img/'+players[id].img; 
+            li.children[1].childNodes[7].innerText='共'+players[i].number+'票';
+            li.children[1].childNodes[1].innerText=players[i].name;
+            li.children[1].childNodes[3].innerText=players[i].school;
+            ul.appendChild(li);
+        }
+        ul.removeChild(tmp);
+    }
+    addProduct();
+    //需求：求排序后的id顺序
+    function newid_method(){
+        var newid = []; //用来记录排序id
+     var newnumber = [];    //获取票数进行排序，从而记录排序ID
+     for(var i=0;i<players.length;i++)newid.push(i);  
+     for(var i=0;i<players.length;i++)newnumber.push(players[i].number);
+      for(var i=0;i<newnumber.length-1;i++){
+          for(var j=0;j<newnumber.length-1-i;j++){
+              if(parseInt(newnumber[j])<parseInt(newnumber[j+1]))
+              {
+                  var temp1 = newnumber[j+1]
+                  var temp2 = newid[j+1];
+                  newnumber[j+1] = newnumber[j];
+                  newid[j+1] = newid[j];
+                  newnumber[j] = temp1;
+                  newid[j] = temp2;           
+              }
+          }
+      } 
+      return newid;
+    }
+    //需求:实现一位数在前加0转为两位输出
+    function fix(num, length) {
+        return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
+     }
+      //需求:实现投票结果页面
+    function  jieguo(){
+    var ul_2 = document.getElementById("tabs-2-content")
+    var tmp2=document.getElementById("tmp-2");
+    var newid = newid_method();
+     for(var i=0;i<newid.length;i++)
+     {
+         var li = tmp2.cloneNode(true);
+         var id  = parseInt(newid[i]);
+         var count = i+1;
+         li.id = 'tab2-'+parseInt(id+1);
+         li.children[0].innerText = fix(count,2);
+         li.children[1].children[0].src = 'img/'+players[id].img;
+         li.children[2].children[0].children[0].innerText = players[id].name;
+         li.children[2].children[0].children[1].innerText = players[id].school;
+         li.children[2].children[1].children[1].innerText = '共'+players[id].number+'票';
+         $($($($($(li).children()[2]).children()[1]).children()[0]).children()[0]).attr("value",players[id].number)      
+         ul_2.appendChild(li);  
+     }
+      ul_2.removeChild(tmp2); 
+    }
+    jieguo();
+     //需求:实现把投票信息存入数据库
+     var request = window.indexedDB.open("ticketInfo", 1);
+     var  db; 
+     request.onupgradeneeded   = function(event){
+        console.log("Upgrading");
+        //db = event.target.result;
+        db = request.result;
+        console.log(db);
+        var store = db.createObjectStore("tickets", {keyPath:"id"});
+        store.createIndex("by_id","id",{unipue:true});
+        store.createIndex("by_name","name");
+        store.createIndex("by_school","school");
+        store.createIndex("by_number","number");
+        store.createIndex("by_img","img");
+        for(var i=0;i<players.length;i++){
+            store.put(players[i]);
+        }
+        };
+    request.onsuccess=function(event){
+        db = event.target.result;
+    }
+    //需求:实现结果展示页面动态排序
+    function dongtaiSort()
+    {
+        var newid = newid_method();
+        var liArray = [];
+        for(var i=0;i<newid.length;i++)
+        {
+            var id = newid[i]+1;
+            var $li = $('#tab2-'+id+'')
+            var count = i+1;
+            ($li.children()[0]).innerHTML = fix(count,2);
+            ($($($li.children()[2]).children()[1]).children()[1]).innerText = '共' + players[newid[i]].number+'票';
+            liArray[i] = $li;
+             $li.remove();                    
+        }
+        console.log(newid);
+        console.log(liArray);  
+        for(var i=0;i<newid.length;i++)
+        {
+           $li = liArray[i]
+           $li.appendTo($('#tabs-2-content'));
+        }    
+    }
+    //需求:实现投票功能
+    $('button').click(function(event){
+        var id = event.currentTarget.parentElement.parentElement.id.replace("tab1-","");
+       var index = parseInt(id)-1;
+       var newnumber = parseInt( players[index].number)+1;
+       var numberTarget = event.currentTarget.nextElementSibling;
+       var mytransaction = db.transaction("tickets","readwrite");
+       var objectStore = mytransaction.objectStore("tickets");
+        players[index].number =''+ newnumber+'';
+       var request = objectStore.put(players[index]);
+       request.onsuccess=function(){
+             numberTarget.innerText = '共'+newnumber+'票';
+            dongtaiSort();      
+            alert("投票成功!");       
+       };
+       request.onerror=function(){
+         alert("投票失败！");
+       };      
+    });     
+    };
+$(function(){
+    $( "#tabs" ).tabs();   
+});
+</script>

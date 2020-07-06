@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./plugin/jquery-3.5.1.js"></script>
+    <script src="./js/vfcode.js"></script>
+</head>
+<body>
+    <form action="signup.html" >
+        <div id="mysignin">
+            <div><h1 style="text-align: center;">注册</h1></div>
+           
+            <div class="line">
+                <div class="icon" id="userIcon"></div>
+                <input type="text" id="userName" placeholder="用户名">
+            </div>
+            <hr size="3" color="#FF8000" width="300px">
+            <div class="line">
+                <div class="icon" id="pwdIcon"></div>
+                <input type="password" id="pwdText" placeholder="密码">
+            </div>
+            <hr size="3" color="#FF8000" width="300px">
+            <div class="line">
+                <div class="icon" id="verIcon"></div>
+                <input type="text" id="verText" placeholder="验证码" >
+                <div id="checkCode" class="code"  onclick="createCode(4)" ></div>
+                <span id="xiehuan">看不清换一张</span>
+            </div>
+            <hr size="3" color="#FF8000" width="300px">
+           <div class="lineButton">
+               <div><button class="button"  id="signup">注册</button></div>
+               <div><input type="reset" value="重置" class="button"></div>
+           </div>
+        </div>
+    </form> 
+</body>
+</html>
